@@ -1,0 +1,274 @@
+// schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum WritingTag {
+  email
+  essay
+}
+
+enum CardType {
+  easy
+  medium
+  hard
+  learned
+}
+
+enum TestStatus {
+  notStarted
+  inProgress
+  completed
+}
+
+// Models
+model User {
+  id              String           @id
+  email           String           @unique
+  fullName        String?
+  username        String           @unique
+  description     String?
+  createdAt       DateTime         @default(now())
+  targetScore     Float?
+  examDate        DateTime?
+  userTestResults UserTestResult[]
+  wordLists       WordList[]
+}
+
+model Submission {
+  id                    Int    @id @default(autoincrement())
+  testId                Int
+  testName              String
+  userId                String
+  totalScore            Int?
+  totalCorrect          Int?
+  totalIncorrect        Int?
+  completionTimeSeconds Int?
+
+  UserTestResult UserTestResult[] @relation(name: "testResultToSubmission")
+}
+
+model UserTestResult {
+  id                    Int          @id @default(autoincrement())
+  user                  User         @relation(fields: [userId], references: [id])
+  submissionId          Int
+  userId                String
+  testType              String?
+  readingTestId         Int?         @map("readingTestId")
+  listeningTestId       Int?         @map("listeningTestId")
+  writingTestId         Int?         @map("writingTestId")
+  score                 Int?
+  completionTimeSeconds Int?
+  totalCorrect          Int?         @default(0)
+  totalIncorrect        Int?         @default(0)
+  createdAt             DateTime     @default(now())
+  userAnswers           UserAnswer[]
+
+  submission    Submission     @relation(name: "testResultToSubmission", fields: [submissionId], references: [id])
+  readingTest   ReadingTest?   @relation(name: "ReadingTestToUserTestResult", fields: [readingTestId], references: [id], map: "ReadingTest_UserTestResult_fkey")
+  listeningTest ListeningTest? @relation(name: "ListeningTestToUserTestResult", fields: [listeningTestId], references: [id], map: "ListeningTest_UserTestResult_fkey")
+  writingTest   WritingTest?   @relation(name: "WritingTestToUserTestResult", fields: [writingTestId], references: [id], map: "WritingTest_UserTestResult_fkey")
+}
+
+model UserAnswer {
+  id                  Int            @id @default(autoincrement())
+  userTestResult      UserTestResult @relation(fields: [userTestResultId], references: [id])
+  userTestResultId    Int
+  questionType        String?
+  readingQuestionId   Int?           @map("readingQuestionId")
+  listeningQuestionId Int?           @map("listeningQuestionId")
+  writingQuestionId   Int?           @map("writingQuestionId")
+  selectedOption      String?
+  writingText         String?
+  isCorrect           Boolean?       @default(false)
+  createdAt           DateTime       @default(now())
+  point               Float?
+
+  readingQuestion   ReadingQuestion?   @relation(name: "ReadingQuestionToUserAnswer", fields: [readingQuestionId], references: [id])
+  listeningQuestion ListeningQuestion? @relation(name: "ListeningQuestionToUserAnswer", fields: [listeningQuestionId], references: [id])
+  writingQuestion   WritingQuestion?   @relation(name: "WritingQuestionToUserAnswer", fields: [writingQuestionId], references: [id])
+}
+
+model Test {
+  id            Int            @id @default(autoincrement())
+  title         String
+  description   String
+  duration      Int?
+  createdAt     DateTime       @default(now())
+  status        TestStatus?    @default(notStarted)
+  readingTest   ReadingTest?   @relation(name: "ReadingTestToTest")
+  listeningTest ListeningTest? @relation(name: "ListeningTestToTest")
+  writingTest   WritingTest?   @relation(name: "WritingTestToTest")
+}
+
+model ReadingTest {
+  id              Int              @id @default(autoincrement())
+  testId          Int              @unique
+  description     String?
+  duration        Int?
+  totalQuestions  Int?             @default(0)
+  createdAt       DateTime         @default(now())
+  readingPassages ReadingPassage[]
+  userTestResults UserTestResult[] @relation(name: "ReadingTestToUserTestResult")
+  test            Test             @relation(name: "ReadingTestToTest", fields: [testId], references: [id])
+}
+
+model ReadingPassage {
+  id               Int               @id @default(autoincrement())
+  readingTest      ReadingTest       @relation(fields: [readingTestId], references: [id])
+  readingTestId    Int
+  title            String?
+  description      String?
+  readingPassage   String?
+  totalQuestions   Int?              @default(0)
+  duration         Int?
+  createdAt        DateTime          @default(now())
+  readingQuestions ReadingQuestion[]
+}
+
+model ReadingQuestion {
+  id               Int                     @id @default(autoincrement())
+  readingPassage   ReadingPassage          @relation(fields: [readingPassageId], references: [id])
+  readingPassageId Int
+  questionNumber   Int?
+  questionText     String?
+  createdAt        DateTime                @default(now())
+  readingOptions   ReadingQuestionOption[]
+  userAnswers      UserAnswer[]            @relation(name: "ReadingQuestionToUserAnswer")
+}
+
+model ReadingQuestionOption {
+  id                Int             @id @default(autoincrement())
+  readingQuestion   ReadingQuestion @relation(fields: [readingQuestionId], references: [id])
+  readingQuestionId Int
+  optionLabel       String?
+  optionText        String?
+  isCorrect         Boolean?
+  createdAt         DateTime        @default(now())
+}
+
+model ListeningTest {
+  id               Int                @id @default(autoincrement())
+  testId           Int                @unique
+  description      String?
+  duration         Int?
+  totalQuestions   Int?               @default(0)
+  listeningFileUrl String?
+  createdAt        DateTime           @default(now())
+  userTestResults  UserTestResult[]   @relation(name: "ListeningTestToUserTestResult")
+  test             Test               @relation(name: "ListeningTestToTest", fields: [testId], references: [id])
+  ListeningSubpart ListeningSubpart[]
+}
+
+model ListeningSubpart {
+  id                Int                 @id @default(autoincrement())
+  listeningTestId   Int
+  title             String?
+  description       String?
+  listeningPassage  String?
+  totalQuestions    Int?                @default(0)
+  duration          Int?
+  createdAt         DateTime            @default(now())
+  listeningTest     ListeningTest       @relation(fields: [listeningTestId], references: [id])
+  ListeningQuestion ListeningQuestion[]
+}
+
+model ListeningQuestion {
+  id                 Int                       @id @default(autoincrement())
+  listeningSubpart   ListeningSubpart          @relation(fields: [listeningSubpartId], references: [id])
+  listeningSubpartId Int
+  questionNumber     Int?
+  questionText       String?
+  audioStartTime     Int?
+  audioEndTime       Int?
+  createdAt          DateTime                  @default(now())
+  listeningOptions   ListeningQuestionOption[]
+  userAnswers        UserAnswer[]              @relation(name: "ListeningQuestionToUserAnswer")
+}
+
+model ListeningQuestionOption {
+  id                  Int               @id @default(autoincrement())
+  listeningQuestion   ListeningQuestion @relation(fields: [listeningQuestionId], references: [id])
+  listeningQuestionId Int
+  optionLabel         String?
+  optionText          String?
+  isCorrect           Boolean?
+  createdAt           DateTime          @default(now())
+}
+
+model WritingTest {
+  id              Int              @id @default(autoincrement())
+  testId          Int              @unique
+  description     String?
+  duration        Int?
+  totalQuestions  Int?             @default(0)
+  createdAt       DateTime         @default(now())
+  userTestResults UserTestResult[] @relation(name: "WritingTestToUserTestResult")
+  test            Test             @relation(name: "WritingTestToTest", fields: [testId], references: [id])
+  WritingSubpart  WritingSubpart[]
+}
+
+model WritingSubpart {
+  id              Int               @id @default(autoincrement())
+  writingTestId   Int
+  title           String?
+  description     String?
+  writingPassage  String?
+  point           Int?
+  totalQuestions  Int?              @default(0)
+  duration        Int?
+  createdAt       DateTime          @default(now())
+  writingTest     WritingTest       @relation(fields: [writingTestId], references: [id])
+  writingQuestion WritingQuestion[]
+}
+
+model WritingQuestion {
+  id                    Int                     @id @default(autoincrement())
+  writingSubpart        WritingSubpart          @relation(fields: [writingSubpartId], references: [id])
+  writingSubpartId      Int
+  question              String?
+  tag                   WritingTag?
+  createdAt             DateTime                @default(now())
+  userAnswers           UserAnswer[]            @relation(name: "WritingQuestionToUserAnswer")
+  WritingQuestionOption WritingQuestionOption[]
+}
+
+model WritingQuestionOption {
+  id                Int             @id @default(autoincrement())
+  writingQuestion   WritingQuestion @relation(fields: [writingQuestionId], references: [id])
+  writingQuestionId Int
+  optionLabel       String?
+  optionText        String?
+  isCorrect         Boolean?
+  createdAt         DateTime        @default(now())
+}
+
+model WordList {
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  title       String?
+  description String?
+  createdAt   DateTime  @default(now())
+  newWords    NewWord[]
+}
+
+model NewWord {
+  id           Int      @id @default(autoincrement())
+  wordList     WordList @relation(fields: [wordListId], references: [id])
+  wordListId   Int
+  word         String?
+  definition   String?
+  imageUrl     String?
+  partOfSpeech String?
+  phonetic     String?
+  example      String?
+  notes        String?
+  cardType     CardType
+  createdAt    DateTime @default(now())
+}

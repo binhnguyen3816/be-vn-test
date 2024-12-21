@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: postgres12
+    ports:
+      - '5432:5432'
+    # volumes:
+    #   - ../database/capstone_project.sql:/docker-entrypoint-initdb.d/capstone_project.sql
