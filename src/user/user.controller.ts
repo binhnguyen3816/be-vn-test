@@ -18,7 +18,7 @@ import { ListeningService } from 'src/listening/listening.service';
 import { SubmitAnswersDto } from 'src/dtos/submit-answers-dto';
 import { CreateUserDto } from 'src/dtos/create-user.dto';
 import { ClerkAuthGuard } from 'auth/clerk-auth.guard';
-import { getAuth } from '@clerk/express';
+import { clerkClient, getAuth } from '@clerk/express';
 import { get } from 'http';
 
 @Controller('v1')
@@ -76,8 +76,9 @@ export class UserController {
     const {userId} = getAuth(req);
     return await this.userService.createUser(createUserDto, userId);
   }
-  @Get('users/:userId')
-  async getUser(@Param('userId') userId: string) {
-    return await this.userService.getUserById(userId);
+  @Get('users')
+  async getUser(@Req() req: any) {
+    const {userId} = getAuth(req);
+    return await this.userService.getUserById(userId); 
   }
 }

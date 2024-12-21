@@ -12,6 +12,7 @@ import { ListeningService } from 'src/listening/listening.service';
 import { ReadingService } from 'src/reading/reading.service';
 import { WritingService } from 'src/writing/writing.service';
 import { SubmitAnswersDto } from 'src/dtos/submit-answers-dto';
+import { clerkClient } from '@clerk/express';
 
 @Injectable()
 export class TestService {
@@ -66,9 +67,7 @@ export class TestService {
       throw new NotFoundException('Test not found');
     }
 
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
+    const user = await clerkClient.users.getUser(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -106,9 +105,7 @@ export class TestService {
     if (!test) {
       throw new NotFoundException('Test not found');
     }
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
+    const user = await clerkClient.users.getUser(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }

@@ -1,3 +1,4 @@
+import { clerkClient } from '@clerk/express';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from 'src/dtos/create-user.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -17,7 +18,7 @@ export class UserService {
     }
 
     async getUserById(userId: string) {
-        const user = this.prisma.user.findUnique({ where: { id: userId } });
+        const user = await clerkClient.users.getUser(userId);
         if (!user) {
             throw new NotFoundException('User not found');
         }

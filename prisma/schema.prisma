@@ -1,7 +1,8 @@
 // schema.prisma
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
@@ -36,7 +37,7 @@ model User {
   createdAt       DateTime         @default(now())
   targetScore     Float?
   examDate        DateTime?
-  userTestResults UserTestResult[]
+  // userTestResults UserTestResult[]
   wordLists       WordList[]
 }
 
@@ -55,7 +56,7 @@ model Submission {
 
 model UserTestResult {
   id                    Int          @id @default(autoincrement())
-  user                  User         @relation(fields: [userId], references: [id])
+  // user                  User         @relation(fields: [userId], references: [id])
   submissionId          Int
   userId                String
   testType              String?
