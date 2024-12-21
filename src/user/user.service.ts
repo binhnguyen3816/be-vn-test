@@ -14,4 +14,8 @@ export class UserService {
         }
         return user;
     }
+    async getAllUsers() {
+        const users = await clerkClient.users.getUserList();
+        return users;
+    }
 }
