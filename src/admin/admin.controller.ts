@@ -6,14 +6,14 @@ import {
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { CreateTestDto } from 'src/dtos/create-test.dto';
-import { CreatePartDto } from 'src/dtos/create-part.dto';
+import { CreateTestDto } from 'src/dtos/create-test.dto.ts';
+import { CreatePartDto } from 'src/dtos/create-part.dto.ts';
 import { TestService } from 'src/test/test.service';
 import { ListeningService } from 'src/listening/listening.service';
 import { WritingService } from 'src/writing/writing.service';
 import { ReadingService } from 'src/reading/reading.service';
-import { CreateSubpartDto } from 'src/dtos/create-subpart.dto';
-import { CreateQuestionDto } from 'src/dtos/create-question.dto';
+import { CreateSubpartDto } from 'src/dtos/create-subpart.dto.ts';
+import { CreateQuestionDto } from 'src/dtos/create-question.dto.ts';
 
 @Controller('v1/admin')
 export class AdminController {
