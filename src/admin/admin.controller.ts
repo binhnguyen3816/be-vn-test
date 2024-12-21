@@ -6,7 +6,7 @@ import {
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { CreateTestDto } from 'src/dtos/create-test.dto.ts';
+import { CreateTestDto } from 'src/dtos/create-test.dto';
 import { CreatePartDto } from 'src/dtos/create-part.dto.ts';
 import { TestService } from 'src/test/test.service';
 import { ListeningService } from 'src/listening/listening.service';
