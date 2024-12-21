@@ -20,9 +20,10 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import { ClerkAuthGuard } from '../../auth/clerk-auth.guard';
 import { clerkClient, getAuth } from '@clerk/express';
 import { get } from 'http';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('v1')
-@UseGuards(ClerkAuthGuard)
+@ApiTags('User')
 export class UserController {
   constructor(
     private readonly testService: TestService,
@@ -32,21 +33,27 @@ export class UserController {
     private readonly userService: UserService,
   ) {}
 
+  @UseGuards(ClerkAuthGuard)
   @Get('tests')
   async getAllTests() {
     return await this.testService.getAllTests();
   }
 
+  @UseGuards(ClerkAuthGuard)
   @Get('tests/:testId')
   async getTest(@Param('testId', ParseIntPipe) testId: number) {
     return await this.testService.getTestById(testId);
   }
+
+  @UseGuards(ClerkAuthGuard)
   @Get('tests/:submissionId/results')
   async getTestResults(
     @Param('submissionId', ParseIntPipe) submissionId: number,
   ) {
     return await this.testService.getTestResults(submissionId);
   }
+
+  @UseGuards(ClerkAuthGuard)
   @Get('tests/:testId/:part')
   async getQuestions(
     @Param('testId', ParseIntPipe) testId: number,
@@ -62,6 +69,8 @@ export class UserController {
       return new ConflictException('Invalid part');
     }
   }
+
+  @UseGuards(ClerkAuthGuard)
   @Post('tests/:testId/submit')
   async submitPart(
     @Param('testId', ParseIntPipe) testId: number,
@@ -71,11 +80,7 @@ export class UserController {
     const { userId } = getAuth(req);
     return await this.testService.submitTest(testId, submitAnswersDto, userId);
   }
-  @Post('users')
-  async createUser(@Body() createUserDto: CreateUserDto, @Req() req: any) {
-    const {userId} = getAuth(req);
-    return await this.userService.createUser(createUserDto, userId);
-  }
+
   @Get('users')
   async getUser(@Req() req: any) {
     const {userId} = getAuth(req);

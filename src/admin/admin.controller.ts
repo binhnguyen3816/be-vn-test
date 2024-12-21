@@ -14,8 +14,10 @@ import { WritingService } from '../writing/writing.service';
 import { ReadingService } from '../reading/reading.service';
 import { CreateSubpartDto } from '../dtos/create-subpart.dto';
 import { CreateQuestionDto } from '../dtos/create-question.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('v1/admin')
+@ApiTags('Admin')
 export class AdminController {
   constructor(
     private readonly testService: TestService,
