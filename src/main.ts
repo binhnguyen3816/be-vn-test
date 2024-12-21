@@ -22,7 +22,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory, {
+  SwaggerModule.setup('', app, documentFactory, {
     customJs: [
       'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js',
       'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.js',
@@ -36,6 +36,6 @@ async function bootstrap() {
   // Use Clerk middleware
   app.use(clerkMiddleware());
 
-  await app.listen(process.env.PORT ?? 8081);
+  await app.listen(process.env.PORT ?? 8080);
 }
 bootstrap();
