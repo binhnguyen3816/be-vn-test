@@ -17,7 +17,7 @@ import { WritingService } from '../writing/writing.service';
 import { ListeningService } from '../listening/listening.service';
 import { SubmitAnswersDto } from '../dtos/submit-answers-dto';
 import { CreateUserDto } from '../dtos/create-user.dto';
-import { ClerkAuthGuard } from 'auth/clerk-auth.guard';
+import { ClerkAuthGuard } from '../../auth/clerk-auth.guard';
 import { clerkClient, getAuth } from '@clerk/express';
 import { get } from 'http';
 

@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
-import { TestModule } from 'src/test/test.module';
-import { TestService } from 'src/test/test.service';
-import { ReadingModule } from 'src/reading/reading.module';
-import { ListeningModule } from 'src/listening/listening.module';
-import { WritingModule } from 'src/writing/writing.module';
-import { ReadingService } from 'src/reading/reading.service';
-import { ListeningService } from 'src/listening/listening.service';
-import { WritingService } from 'src/writing/writing.service';
+import { TestModule } from '../test/test.module';
+import { TestService } from '../test/test.service';
+import { ReadingModule } from '../reading/reading.module';
+import { ListeningModule } from '../listening/listening.module';
+import { WritingModule } from '../writing/writing.module';
+import { ReadingService } from '../reading/reading.service';
+import { ListeningService } from '../listening/listening.service';
+import { WritingService } from '../writing/writing.service';
 
 
 @Module({
