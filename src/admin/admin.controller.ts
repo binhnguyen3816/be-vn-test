@@ -104,4 +104,9 @@ export class AdminController {
   async getAllUsers() {
     return await this.userService.getAllUsers();
   }
+  
+  @Get('submissions')
+  async getAllSubmissions() {
+    return await this.testService.getAllSubmissions();
+  }
 }
