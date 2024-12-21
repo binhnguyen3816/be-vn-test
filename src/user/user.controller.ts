@@ -1,5 +1,5 @@
 import { UserService } from './user.service';
-import { ReadingService } from 'src/reading/reading.service';
+import { ReadingService } from '../reading/reading.service';
 import { TestService } from './../test/test.service';
 import {
   Body,
@@ -13,10 +13,10 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { WritingService } from 'src/writing/writing.service';
-import { ListeningService } from 'src/listening/listening.service';
-import { SubmitAnswersDto } from 'src/dtos/submit-answers-dto';
-import { CreateUserDto } from 'src/dtos/create-user.dto';
+import { WritingService } from '../writing/writing.service';
+import { ListeningService } from '../listening/listening.service';
+import { SubmitAnswersDto } from '../dtos/submit-answers-dto';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { ClerkAuthGuard } from 'auth/clerk-auth.guard';
 import { clerkClient, getAuth } from '@clerk/express';
 import { get } from 'http';
