@@ -15,8 +15,8 @@ import {
 } from '@nestjs/common';
 import { WritingService } from 'src/writing/writing.service';
 import { ListeningService } from 'src/listening/listening.service';
-import { SubmitAnswersDto } from 'src/dtos/submit-answers-dto.ts';
-import { CreateUserDto } from 'src/dtos/create-user.dto.ts';
+import { SubmitAnswersDto } from 'src/dtos/submit-answers-dto';
+import { CreateUserDto } from 'src/dtos/create-user.dto';
 import { ClerkAuthGuard } from 'auth/clerk-auth.guard';
 import { clerkClient, getAuth } from '@clerk/express';
 import { get } from 'http';
