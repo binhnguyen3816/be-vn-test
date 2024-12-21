@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -15,6 +16,7 @@ import { ReadingService } from '../reading/reading.service';
 import { CreateSubpartDto } from '../dtos/create-subpart.dto';
 import { CreateQuestionDto } from '../dtos/create-question.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { UserService } from '../user/user.service';
 
 @Controller('v1/admin')
 @ApiTags('Admin')
@@ -24,6 +26,7 @@ export class AdminController {
     private readonly readingService: ReadingService,
     private readonly writingService: WritingService,
     private readonly listeningService: ListeningService,
+    private readonly userService: UserService,
   ) {}
 
   @Post('tests')
@@ -96,5 +99,14 @@ export class AdminController {
         createQuestionDto,
       );
     }
+  }
+  @Get('users')
+  async getAllUsers() {
+    return await this.userService.getAllUsers();
+  }
+  
+  @Get('submissions')
+  async getAllSubmissions() {
+    return await this.testService.getAllSubmissions();
   }
 }

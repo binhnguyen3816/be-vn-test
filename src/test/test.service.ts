@@ -179,6 +179,9 @@ export class TestService {
     })
     
   }
+  async getAllSubmissions() {
+    return await this.prisma.submission.findMany();
+  }
   //helper function to calculate the duration of the test
   private async calculateTestDuration(testId: number) {
     const readingTest = await this.prisma.readingTest.findFirst({
