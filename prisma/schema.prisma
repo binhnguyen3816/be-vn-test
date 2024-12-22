@@ -50,6 +50,7 @@ model Submission {
   totalCorrect          Int?
   totalIncorrect        Int?
   completionTimeSeconds Int?
+  createdAt             DateTime @default(now())
 
   UserTestResult UserTestResult[] @relation(name: "testResultToSubmission")
 }
