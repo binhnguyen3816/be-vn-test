@@ -8,6 +8,7 @@ import { ReadingModule } from './reading/reading.module';
 import { ListeningModule } from './listening/listening.module';
 import { WritingModule } from './writing/writing.module';
 import { UserModule } from './user/user.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UserModule } from './user/user.module';
     ReadingModule,
     ListeningModule,
     WritingModule,
+    PostModule,
   ],
   controllers: [],
   providers: [

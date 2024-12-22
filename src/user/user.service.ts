@@ -7,6 +7,7 @@ import { PrismaService } from 'src/prisma.service';
 export class UserService {
     constructor(private readonly prisma: PrismaService) {}
 
+
     async getUserById(userId: string) {
         const user = await clerkClient.users.getUser(userId);
         if (!user) {

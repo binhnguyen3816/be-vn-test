@@ -29,16 +29,16 @@ enum TestStatus {
 
 // Models
 model User {
-  id              String           @id
-  email           String           @unique
-  fullName        String?
-  username        String           @unique
-  description     String?
-  createdAt       DateTime         @default(now())
-  targetScore     Float?
-  examDate        DateTime?
+  id          String     @id
+  email       String     @unique
+  fullName    String?
+  username    String     @unique
+  description String?
+  createdAt   DateTime   @default(now())
+  targetScore Float?
+  examDate    DateTime?
   // userTestResults UserTestResult[]
-  wordLists       WordList[]
+  wordLists   WordList[]
 }
 
 model Submission {
@@ -272,4 +272,12 @@ model NewWord {
   notes        String?
   cardType     CardType
   createdAt    DateTime @default(now())
+}
+
+model Post {
+  id        Int       @id @default(autoincrement())
+  tags      String[]
+  title     String
+  content   String 
+  createdAt DateTime  @default(now())
 }
