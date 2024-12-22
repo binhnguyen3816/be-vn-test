@@ -180,7 +180,20 @@ export class TestService {
     
   }
   async getAllSubmissions() {
-    return await this.prisma.submission.findMany();
+    const submissions = await this.prisma.submission.findMany();
+    const submissionsWithUser = await Promise.all(
+      submissions.map(async (submission) => {
+        const user = await clerkClient.users.getUser(submission.userId);
+        return {
+          ...submission,
+          user: {
+            firstName: user?.firstName,
+            lastName: user?.lastName,
+          },
+        };
+      })
+    );
+    return submissionsWithUser
   }
   //helper function to calculate the duration of the test
   private async calculateTestDuration(testId: number) {
