@@ -1,14 +1,15 @@
-import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
-import { PrismaModule } from './prisma.module';
-import { UserController } from './user/user.controller';
 import { AdminModule } from './admin/admin.module';
-import { TestModule } from './test/test.module';
-import { ReadingModule } from './reading/reading.module';
 import { ListeningModule } from './listening/listening.module';
-import { WritingModule } from './writing/writing.module';
-import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
+import { PrismaModule } from './prisma.module';
+import { ReadingModule } from './reading/reading.module';
+import { SpellCorrectionModule } from './spell-correction/spell-correction.module';
+import { TestModule } from './test/test.module';
+import { UserModule } from './user/user.module';
+import { WritingModule } from './writing/writing.module';
 
 @Module({
   imports: [
@@ -20,6 +21,10 @@ import { PostModule } from './post/post.module';
     ListeningModule,
     WritingModule,
     PostModule,
+    SpellCorrectionModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
   ],
   controllers: [],
   providers: [
