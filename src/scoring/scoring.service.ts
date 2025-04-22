@@ -17,15 +17,7 @@ Bạn là một giám khảo tiếng Việt. Hãy chấm điểm bài viết sau
 
 Hãy trả về kết quả dưới dạng JSON như sau:
 {
-  "score": <tổng điểm>,
-  "criteria": {
-    "organization": <điểm>,
-    "contentDevelopment": <điểm>,
-    "grammar": <điểm>,
-    "mechanics": <điểm>,
-    "styleAndQuality": <điểm>
-  },
-  "feedback": "<nhận xét>"
+  "score": <tổng điểm>
 }
 Hãy chỉ trả về **JSON thuần túy**, không thêm lời giải thích, tiêu đề, hay bất kỳ chữ nào khác.
 
