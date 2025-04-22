@@ -10,6 +10,7 @@ import { SpellCorrectionModule } from './spell-correction/spell-correction.modul
 import { TestModule } from './test/test.module';
 import { UserModule } from './user/user.module';
 import { WritingModule } from './writing/writing.module';
+import { ScoringModule } from './scoring/scoring.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { WritingModule } from './writing/writing.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ScoringModule,
   ],
   controllers: [],
   providers: [
