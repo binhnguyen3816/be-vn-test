@@ -8,6 +8,6 @@ export class ScoringController {
 
   @Post()
   async grade(@Body() createEssayDto: CreateEssayDto) {
-    return await this.gradingService.gradeEssay(createEssayDto.essay);
+    return await this.gradingService.gradeEssay(createEssayDto.essay, createEssayDto.question);
   }
 }
