@@ -49,7 +49,6 @@ ${essay}
     });
   
     const textResponse = response.data.candidates?.[0]?.content?.parts?.[0]?.text;
-    console.log('Raw Gemini response:', textResponse); // debug log
   
     try {
       // Nếu Gemini trả về JSON chuẩn
