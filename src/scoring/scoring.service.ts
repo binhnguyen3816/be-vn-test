@@ -47,21 +47,26 @@ ${essay}
   
     const textResponse = response.data.candidates?.[0]?.content?.parts?.[0]?.text;
   
+    let rawScore;
     try {
-      // Nếu Gemini trả về JSON chuẩn
-      return JSON.parse(textResponse);
+      rawScore = JSON.parse(textResponse);
     } catch (e) {
-      // Nếu Gemini có thêm lời bình luận hoặc tiêu đề, trích xuất đoạn JSON chính
       const jsonMatch = textResponse.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         try {
-          return JSON.parse(jsonMatch[0]);
+          rawScore = JSON.parse(jsonMatch[0]);
         } catch {
           throw new Error('Không thể phân tích đoạn JSON trích xuất từ phản hồi.');
         }
+      } else {
+        throw new Error('Không thể phân tích phản hồi từ Gemini');
       }
-      throw new Error('Không thể phân tích phản hồi từ Gemini');
     }
-  }
   
+    // Chuyển đổi từ thang 100 về thang 6
+    const originalScore = rawScore.score;
+    const scaledScore = Math.round((originalScore / 100) * 6);
+  
+    return { score: scaledScore };
+  }
 }
